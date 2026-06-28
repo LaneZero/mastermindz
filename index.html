@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <meta name="theme-color" content="#0a0a1a" />
-  <meta name="game-version" content="1.5.1" />
+  <meta name="game-version" content="1.6.0" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -429,6 +429,90 @@
     .hint-color { padding: 6px 3px; border-radius: 9px; text-align: center; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06); font-size: .67rem; color: var(--muted); }
     .hint-color b { display: block; margin-top: 2px; color: #fff; }
 
+    /* Fast input: the color dock remains reachable while the player moves through the board. */
+    #gameScreen .app-shell { padding-bottom: 98px; }
+    .right-panel { align-self: start; }
+    @media (min-width: 901px) { .right-panel { position: sticky; top: 16px; } }
+    .quick-palette-dock {
+      position: fixed;
+      z-index: 18;
+      left: 50%;
+      bottom: max(12px, env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      width: min(780px, calc(100% - 30px));
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 11px;
+      border: 1px solid rgba(255, 215, 0, .30);
+      border-radius: 18px;
+      background: rgba(15, 15, 37, .89);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, .34), 0 0 24px rgba(255, 215, 0, .08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .quick-palette-header { min-width: 88px; display: grid; gap: 2px; }
+    .quick-palette-title { color: var(--gold); font-size: .73rem; font-weight: 900; }
+    .quick-palette-status { color: var(--muted); font-size: .64rem; line-height: 1.35; }
+    .quick-palette-grid { display: grid; grid-template-columns: repeat(8, minmax(44px, 1fr)); gap: 6px; }
+    .quick-color-button {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, .16);
+      border-radius: 13px;
+      color: #12121a;
+      background: rgba(255, 255, 255, .04);
+      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+    }
+    .quick-color-button:hover, .quick-color-button.selected {
+      transform: translateY(-2px) scale(1.05);
+      border-color: rgba(255, 215, 0, .92);
+      box-shadow: 0 0 0 3px rgba(255, 215, 0, .14), 0 8px 16px rgba(0, 0, 0, .25);
+    }
+    .quick-color-swatch {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border: 2px solid rgba(255, 255, 255, .72);
+      border-radius: 50%;
+      font-size: .76rem;
+      font-weight: 900;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, .38);
+    }
+    .quick-color-key {
+      position: absolute;
+      inset-inline-end: 4px;
+      inset-block-end: 3px;
+      min-width: 13px;
+      color: rgba(255, 255, 255, .95);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .56rem;
+      font-weight: 900;
+      line-height: 1;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, .82);
+      direction: ltr;
+    }
+    .quick-palette-actions { display: flex; gap: 6px; }
+    .quick-action-btn, .quick-submit-btn {
+      min-height: 44px;
+      padding: 0 10px;
+      border-radius: 12px;
+      font-size: .72rem;
+      font-weight: 900;
+      white-space: nowrap;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease, background .16s ease;
+    }
+    .quick-action-btn { border: 1px solid rgba(255, 255, 255, .14); color: var(--text); background: rgba(255, 255, 255, .06); }
+    .quick-submit-btn { border: 1px solid rgba(255, 215, 0, .68); color: #201300; background: linear-gradient(135deg, var(--gold), var(--gold-2)); box-shadow: 0 6px 14px rgba(255, 159, 28, .18); }
+    .quick-action-btn:hover:not(:disabled), .quick-submit-btn:hover:not(:disabled) { transform: translateY(-2px); }
+    .quick-action-btn:disabled, .quick-submit-btn:disabled { opacity: .44; cursor: not-allowed; }
+
 
     .mode-status { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 11px; }
     .mode-chip { display: inline-flex; align-items: center; min-height: 26px; padding: 4px 8px; border: 1px solid rgba(255,215,0,.18); border-radius: 999px; background: rgba(255,215,0,.055); color: #f5e9b7; font-size: .7rem; line-height: 1.25; }
@@ -480,7 +564,7 @@
     tr:last-child td { border-bottom: none; }
     .empty-board { padding: 20px; color: var(--muted); text-align: center; }
 
-    .toast { position: fixed; left: 50%; transform: translateX(-50%) translateY(15px); bottom: 20px; z-index: 40; min-width: min(420px, calc(100% - 28px)); max-width: 540px; padding: 12px 16px; border: 1px solid rgba(255,255,255,.14); background: #1e1e42; color: #fff; border-radius: 13px; box-shadow: var(--shadow); opacity: 0; pointer-events: none; transition: .25s ease; text-align: center; font-size: .86rem; }
+    .toast { position: fixed; left: 50%; transform: translateX(-50%) translateY(15px); bottom: 92px; z-index: 40; min-width: min(420px, calc(100% - 28px)); max-width: 540px; padding: 12px 16px; border: 1px solid rgba(255,255,255,.14); background: #1e1e42; color: #fff; border-radius: 13px; box-shadow: var(--shadow); opacity: 0; pointer-events: none; transition: .25s ease; text-align: center; font-size: .86rem; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .toast.success { border-color: rgba(77,240,166,.45); }
     .toast.error { border-color: rgba(255,95,109,.5); }
@@ -581,6 +665,21 @@
     html[data-theme="light"] .helper-message { color: var(--text); }
     html[data-theme="light"] .mode-chip { background: rgba(255,215,0,.11); border-color: rgba(138,99,0,.2); color: #5e4a13; }
     html[data-theme="light"] .exact-marker { background: #15151b; color: #fff7c0; }
+    html[data-theme="light"] .quick-palette-dock {
+      border-color: rgba(138, 99, 0, .26);
+      background: rgba(255, 255, 255, .91);
+      box-shadow: 0 14px 32px rgba(40, 48, 90, .16);
+    }
+    html[data-theme="light"] .quick-color-button,
+    html[data-theme="light"] .quick-action-btn {
+      border-color: rgba(70, 80, 135, .18);
+      background: rgba(255, 255, 255, .83);
+    }
+    html[data-theme="light"] .quick-color-button:hover,
+    html[data-theme="light"] .quick-color-button.selected {
+      border-color: rgba(138, 99, 0, .72);
+      box-shadow: 0 0 0 3px rgba(138, 99, 0, .11), 0 8px 16px rgba(40, 48, 90, .12);
+    }
 
     @media (max-width: 1160px) {
       .game-layout { grid-template-columns: minmax(190px, .78fr) minmax(430px, 1.8fr) minmax(200px, .85fr); gap: 12px; }
@@ -616,6 +715,27 @@
       .board-panel { padding: 10px; }
       .secret-pegs { gap: 5px; }
       .color-button { min-height: 56px; }
+      .right-panel > .panel-title,
+      .right-panel > #palette,
+      .right-panel > #selectionStatus { display: none; }
+      #gameScreen .app-shell { padding-bottom: 208px; }
+      .quick-palette-dock {
+        bottom: 0;
+        width: 100%;
+        grid-template-columns: 1fr;
+        gap: 7px;
+        padding: 8px max(10px, env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+        border-radius: 20px 20px 0 0;
+        border-inline-width: 0;
+        border-bottom-width: 0;
+      }
+      .quick-palette-header { min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+      .quick-palette-status { text-align: end; }
+      .quick-palette-grid { grid-template-columns: repeat(4, minmax(44px, 1fr)); gap: 5px; }
+      .quick-color-button { min-height: 44px; }
+      .quick-palette-actions { display: grid; grid-template-columns: 1fr 1.25fr; }
+      .quick-action-btn, .quick-submit-btn { width: 100%; }
+      .toast { bottom: calc(212px + env(safe-area-inset-bottom)); }
       .result-grid { grid-template-columns: 1fr; }
       .resume-box { align-items: flex-start; flex-direction: column; }
     }
@@ -756,6 +876,17 @@
         </a>
       </footer>
     </main>
+    <section id="quickPaletteDock" class="quick-palette-dock" data-i18n-aria="quickColorPalette" aria-label="انتخاب سریع رنگ‌ها">
+      <div class="quick-palette-header">
+        <span class="quick-palette-title" data-i18n="quickPaletteTitle">انتخاب سریع رنگ</span>
+        <span id="quickPaletteStatus" class="quick-palette-status" aria-live="polite">برای خانه بعدی، یک رنگ بزن.</span>
+      </div>
+      <div id="quickPalette" class="quick-palette-grid" data-i18n-aria="quickColorPalette" aria-label="انتخاب سریع رنگ‌ها"></div>
+      <div class="quick-palette-actions">
+        <button id="quickUndoBtn" class="quick-action-btn" type="button" data-i18n="quickUndo">⌫ حذف آخرین</button>
+        <button id="quickSubmitBtn" class="quick-submit-btn" type="button" disabled data-i18n="quickSubmit">ثبت حدس ↵</button>
+      </div>
+    </section>
   </section>
 
   <div id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
@@ -826,7 +957,7 @@
         gameScreenAria: 'صفحه بازی', gameInfo: 'اطلاعات بازی', playerCaption: 'رمزگشای رسمی امروز',
         potentialScore: 'امتیاز احتمالی', winStreak: 'بردهای پیاپی', time: 'زمان', attemptsLeftLabel: 'تلاش باقی‌مانده', bestScoreLabel: 'بهترین امتیاز', winRateLabel: 'نرخ برد',
         boardTitle: 'فکر و بکر', boardInstruction: 'برای انتخاب رنگ، دکمه رنگ را بزن و سپس خانه را انتخاب کن.',
-        secretCode: 'کد مخفی', guessBoard: 'صفحه حدس‌ها', colorSelection: 'انتخاب رنگ', colorPalette: 'پالت رنگ‌ها',
+        secretCode: 'کد مخفی', guessBoard: 'صفحه حدس‌ها', colorSelection: 'انتخاب رنگ', colorPalette: 'پالت رنگ‌ها', quickPaletteTitle: 'انتخاب سریع رنگ', quickColorPalette: 'انتخاب سریع رنگ‌ها', quickPaletteIdle: 'برای خانهٔ بعدی، یک رنگ بزن.', quickPaletteSelected: 'آماده برای خانهٔ بعدی: {color}', quickColorTitle: '{color} را در خانهٔ خالی بعدی بگذار (کلید {key})', quickUndo: '⌫ حذف آخرین', quickSubmit: 'ثبت حدس ↵', quickRowFull: 'ردیف کامل است؛ برای اصلاح روی مهره بزن یا «حذف آخرین» را استفاده کن.',
         submitGuess: 'ثبت حدس ↵', clearRow: 'پاک‌کردن ردیف', newGame: 'بازی جدید', colorNotes: 'یادداشت رنگ‌ها', colorUsage: 'تعداد مشاهده‌شده هر رنگ',
         helpTitle: 'راهنمای سریع بازی', close: 'بستن', leaderboardTitle: '🏆 ده امتیاز برتر', gameSetup: 'تنظیمات بازی', setupDescription: 'قانون‌های این دور را پیش از شروع انتخاب کن.', allowRepeatsLabel: 'اجازهٔ رنگ تکراری در کد', allowRepeatsHelp: 'یک رنگ می‌تواند بیش از یک‌بار در کد مخفی ظاهر شود.', easyModeLabel: 'حالت ساده', easyModeHelp: 'جایگاه‌های دقیق با علامت تأیید روی مهره‌ها نمایش داده می‌شوند؛ امتیاز این حالت کمتر محاسبه می‌شود.', helperTitle: 'یار رمزگشا', helperButton: '✨ یک راهنمایی ({count})', helperRemaining: 'راهنمایی باقی‌مانده: {count}', helperInitial: 'شروع آرام هم شروع است. یک حدس متنوع، اطلاعات بیشتری برای دور بعد می‌دهد.', helperProgress: 'پیشرفت خوبی داری. بازخورد قبلی سرنخ قابل استفاده دارد؛ این بار فقط یک تغییر هدفمند بده.', helperNoSignals: 'این حدس بی‌فایده نبود؛ به تو گفت چه رنگ‌هایی احتمالاً در کد نیستند. با نظم ادامه بده.', helperLate: '{count} تلاش مانده است. مهره‌های تأییدشده را نگه دار و فقط یک یا دو خانه را تغییر بده.', hintEliminate: 'سرنخ قطعی: رنگ {color} در کد مخفی وجود ندارد.', hintColor: 'سرنخ مهربان: رنگ {color} دست‌کم یک‌بار در کد مخفی وجود دارد.', hintPosition: 'سرنخ دقیق: خانهٔ {position} کد مخفی رنگ {color} است.', helperUsed: 'یک راهنمایی استفاده شد. {count} راهنمایی دیگر باقی مانده است.', helperNone: 'تمام راهنمایی‌ها استفاده شده‌اند، اما بازخوردهای قبلی هنوز مسیر را روشن می‌کنند.', modeEasy: 'حالت ساده', modeClassic: 'حالت عادی', modeRepeatsOn: 'رنگ تکراری: روشن', modeRepeatsOff: 'رنگ تکراری: خاموش', exactMatchAria: 'این جایگاه دقیق تأیید شده است.', colorsDoNotRepeat: 'رنگ‌ها در کد تکرار نمی‌شوند',
         colorBlindOn: 'حالت کوررنگی', themeToLight: 'روشن', themeToDark: 'تیره', themeLightEnabled: 'حالت روشن فعال شد.', themeDarkEnabled: 'حالت تیره فعال شد.', footerDesign: 'طراحی شده با عشق توسط', footerGithubLabel: 'مشاهده گیت‌هاب', footerGithubAria: 'مشاهده پروفایل LaneZero در گیت‌هاب', soundOff: 'قطع صدا', soundOn: 'فعال‌کردن صدا',
@@ -852,10 +983,10 @@
         previousScore: 'بهترین امتیاز «{username}»: {best} | برد: {wins} از {played}', resumeMessage: '{username}، بازی تو از ردیف {row} قابل ادامه است.',
         helpContent: `
           <div class="help-step"><div class="help-n">۱</div><div><p>کامپیوتر یک کد مخفی از <b>۶ مهره</b> می‌سازد. پیش از شروع، می‌توانی «رنگ تکراری در کد» را روشن یا خاموش کنی. در حالت خاموش، هر شش رنگ کد مخفی متفاوت هستند.</p></div></div>
-          <div class="help-step"><div class="help-n">۲</div><div><p>یک رنگ را از پالت انتخاب کن و خانه‌های ردیف فعال را پر کن. کلیدهای <b>۱ تا ۸</b> رنگ را انتخاب می‌کنند؛ <b>Backspace</b> آخرین مهره را پاک می‌کند.</p></div></div>
+          <div class="help-step"><div class="help-n">۲</div><div><p>نوار <b>انتخاب سریع رنگ</b> پایین صفحه همیشه در دسترس است: با لمس یک رنگ، آن رنگ مستقیم در نخستین خانهٔ خالی قرار می‌گیرد. برای اصلاح، روی مهره بزن یا «حذف آخرین» را بزن. کلیدهای <b>۱ تا ۸</b> رنگ را انتخاب می‌کنند و <b>Backspace</b> آخرین مهره را پاک می‌کند.</p></div></div>
           <div class="help-step"><div class="help-n">۳</div><div><p>پس از ثبت حدس: مهره <b>سیاه</b> یعنی رنگ و جایگاه درست؛ مهره <b>سفید</b> یعنی رنگ درست اما جایگاه اشتباه. در حالت عادی، ترتیب بازخوردها جای هر مهره را لو نمی‌دهد.</p><div class="tutorial-demo"><span class="tutorial-dot" style="background:#ff4444"></span><span class="tutorial-dot" style="background:#4444ff"></span><span class="tutorial-dot" style="background:#44bb44"></span><span class="tutorial-feedback">● ● ○ = دو جایگاه دقیق، یک رنگ در جای نادرست</span></div></div></div>
           <div class="help-step"><div class="help-n">۴</div><div><p>در <b>حالت ساده</b>، جایگاه هر مهرهٔ سیاه با علامت <b>✓</b> روی همان مهره نشان داده می‌شود تا مهره‌های درست را ناخواسته جابه‌جا نکنی. چون این کمک مستقیم است، امتیاز این حالت کمتر محاسبه می‌شود.</p></div></div>
-          <div class="help-step"><div class="help-n">۵</div><div><p>«یار رمزگشا» تا <b>۳ راهنمایی</b> می‌دهد: حذف یک رنگ، تأیید وجود یک رنگ یا آشکارکردن یک جایگاه. راهنمایی‌ها امتیاز را کم نمی‌کنند، اما بهتر است برای زمانی نگه‌شان داری که واقعاً گیر کرده‌ای.</p></div></div>
+          <div class="help-step"><div class="help-n">۵</div><div><p>«یار رمزگشا» تا <b>۳ راهنمایی</b> می‌دهد: حذف یک رنگ، تأیید یک رنگ جدید یا آشکارکردن یک جایگاه. رنگی که قبلاً در حدس‌هایت استفاده کرده‌ای دوباره به‌عنوان رنگ جدید پیشنهاد نمی‌شود؛ اگر رنگ تازه‌ای نمانده باشد، یار رمزگشا سراغ سرنخ جایگاه می‌رود.</p></div></div>
           <div class="help-step"><div class="help-n">۶</div><div><p>در کمتر از ۱۰ تلاش کد را پیدا کن. امتیاز بالاتر با تلاش کمتر، زمان زیر ۶۰ ثانیه و بردهای پیاپی به دست می‌آید. ضریب شفاف حالت‌ها: <b>عادی با تکرار رنگ ۱٫۰۰</b>، <b>عادی بدون تکرار ۰٫۹۰</b>، <b>ساده با تکرار ۰٫۷۵</b> و <b>ساده بدون تکرار ۰٫۶۵</b>.</p></div></div>`,
       },
       en: {
@@ -873,7 +1004,7 @@
         gameScreenAria: 'Game screen', gameInfo: 'GAME INFO', playerCaption: "Today's official codebreaker",
         potentialScore: 'Potential score', winStreak: 'Win streak', time: 'Time', attemptsLeftLabel: 'Attempts left', bestScoreLabel: 'Best score', winRateLabel: 'Win rate',
         boardTitle: 'MASTERMIND', boardInstruction: 'Choose a color, then select a slot in the active row.',
-        secretCode: 'Secret code', guessBoard: 'Guess board', colorSelection: 'CHOOSE COLORS', colorPalette: 'Color palette',
+        secretCode: 'Secret code', guessBoard: 'Guess board', colorSelection: 'CHOOSE COLORS', colorPalette: 'Color palette', quickPaletteTitle: 'QUICK COLORS', quickColorPalette: 'Quick color selection', quickPaletteIdle: 'Tap a color to fill the next slot.', quickPaletteSelected: 'Ready for the next slot: {color}', quickColorTitle: 'Place {color} in the next empty slot (key {key})', quickUndo: '⌫ UNDO LAST', quickSubmit: 'SUBMIT ↵', quickRowFull: 'This row is full. Tap a peg to edit it or use Undo Last.',
         submitGuess: 'SUBMIT GUESS ↵', clearRow: 'CLEAR ROW', newGame: 'NEW GAME', colorNotes: 'COLOR NOTES', colorUsage: 'Color usage counts',
         helpTitle: 'HOW TO PLAY', close: 'Close', leaderboardTitle: '🏆 TOP 10 SCORES', gameSetup: 'GAME SETUP', setupDescription: 'Choose this round’s rules before starting.', allowRepeatsLabel: 'Allow repeated colors in the code', allowRepeatsHelp: 'A color may appear more than once in the secret code.', easyModeLabel: 'Easy mode', easyModeHelp: 'Exact positions are marked with a check on the pegs; this mode awards a lower score.', helperTitle: 'CODEBREAKER HELPER', helperButton: '✨ GET A HINT ({count})', helperRemaining: 'Hints remaining: {count}', helperInitial: 'A calm start still counts. A varied first guess gives you more information for the next turn.', helperProgress: 'You are making progress. The previous feedback contains a usable clue; make just one deliberate change this turn.', helperNoSignals: 'That guess was not wasted. It narrowed down which colors are probably absent. Keep going methodically.', helperLate: '{count} attempts remain. Keep confirmed pegs and change only one or two positions.', hintEliminate: 'Verified clue: {color} is not in the secret code.', hintColor: 'Friendly clue: {color} appears at least once in the secret code.', hintPosition: 'Precise clue: position {position} in the secret code is {color}.', helperUsed: 'One hint used. {count} hint(s) remain.', helperNone: 'All hints have been used, but the earlier feedback still points to a solution.', modeEasy: 'Easy mode', modeClassic: 'Classic mode', modeRepeatsOn: 'Repeats: on', modeRepeatsOff: 'Repeats: off', exactMatchAria: 'This exact position is confirmed.', colorsDoNotRepeat: 'Colors do not repeat in the code',
         colorBlindOn: 'Colorblind mode', themeToLight: 'LIGHT', themeToDark: 'DARK', themeLightEnabled: 'Light mode enabled.', themeDarkEnabled: 'Dark mode enabled.', footerDesign: 'Designed with love by', footerGithubLabel: 'View on GitHub', footerGithubAria: 'Open the LaneZero GitHub profile', soundOff: 'Mute sound', soundOn: 'Enable sound',
@@ -899,10 +1030,10 @@
         previousScore: "{username}'s best: {best} | wins: {wins} of {played}", resumeMessage: '{username}, your game can resume from row {row}.',
         helpContent: `
           <div class="help-step"><div class="help-n">1</div><div><p>The computer creates a secret code of <b>6 pegs</b>. Before starting, you can turn repeated colors in the code on or off. When off, all six secret colors are different.</p></div></div>
-          <div class="help-step"><div class="help-n">2</div><div><p>Choose a palette color and fill the active row. Keys <b>1 through 8</b> select colors; <b>Backspace</b> clears the latest peg.</p></div></div>
+          <div class="help-step"><div class="help-n">2</div><div><p>The <b>Quick Colors</b> dock stays at the bottom of the screen: tap a color to place it directly into the next empty slot. To correct a row, tap a peg or use <b>Undo Last</b>. Keys <b>1 through 8</b> select colors; <b>Backspace</b> clears the latest peg.</p></div></div>
           <div class="help-step"><div class="help-n">3</div><div><p>After submitting: a <b>black</b> peg means the right color in the right position; a <b>white</b> peg means the right color in the wrong position. In classic mode, feedback order never identifies a specific slot.</p><div class="tutorial-demo"><span class="tutorial-dot" style="background:#ff4444"></span><span class="tutorial-dot" style="background:#4444ff"></span><span class="tutorial-dot" style="background:#44bb44"></span><span class="tutorial-feedback">● ● ○ = two exact positions, one correct color in the wrong position</span></div></div></div>
           <div class="help-step"><div class="help-n">4</div><div><p>In <b>easy mode</b>, every exact black-peg position is marked with <b>✓</b> on that peg, so you do not accidentally move a confirmed peg. Because this is direct help, easy-mode scores are lower.</p></div></div>
-          <div class="help-step"><div class="help-n">5</div><div><p>The <b>Codebreaker Helper</b> offers up to <b>3 hints</b>: eliminate a color, confirm a color, or reveal a position. Hints do not lower your score, but save them for the moments when you are truly stuck.</p></div></div>
+          <div class="help-step"><div class="help-n">5</div><div><p>The <b>Codebreaker Helper</b> offers up to <b>3 hints</b>: eliminate a color, confirm a new color, or reveal a position. A color you have already used in a guess is never repeated as a new-color recommendation; when no unseen color remains, the helper reveals a position instead.</p></div></div>
           <div class="help-step"><div class="help-n">6</div><div><p>Crack the code in fewer than 10 attempts. Higher scores come from fewer attempts, solving under 60 seconds, and maintaining a win streak. Mode multipliers are: <b>classic with repeats 1.00</b>, <b>classic without repeats 0.90</b>, <b>easy with repeats 0.75</b>, and <b>easy without repeats 0.65</b>.</p></div></div>`,
       }
     };
@@ -925,6 +1056,7 @@
       playerName: $('#playerName'), liveScore: $('#liveScore'), streakValue: $('#streakValue'), timer: $('#timer'), attemptsLeft: $('#attemptsLeft'),
       bestScore: $('#bestScore'), winRate: $('#winRate'), boardAdvice: $('#boardAdvice'), modeStatus: $('#modeStatus'), rowStatus: $('#rowStatus'), secretStatus: $('#secretStatus'),
       secretPegs: $('#secretPegs'), board: $('#board'), palette: $('#palette'), selectionStatus: $('#selectionStatus'), submitBtn: $('#submitBtn'),
+      quickPaletteDock: $('#quickPaletteDock'), quickPalette: $('#quickPalette'), quickPaletteStatus: $('#quickPaletteStatus'), quickUndoBtn: $('#quickUndoBtn'), quickSubmitBtn: $('#quickSubmitBtn'),
       clearBtn: $('#clearBtn'), newGameBtn: $('#newGameBtn'), hintBtn: $('#hintBtn'), helperMessage: $('#helperMessage'), hintMeta: $('#hintMeta'), colorHintList: $('#colorHintList'), leaderboardBtn: $('#leaderboardBtn'),
       helpBtn: $('#helpBtn'), colorBlindBtn: $('#colorBlindBtn'), soundBtn: $('#soundBtn'), helpModal: $('#helpModal'), leaderboardModal: $('#leaderboardModal'),
       leaderboardContent: $('#leaderboardContent'), resultLayer: $('#resultLayer'), resultIcon: $('#resultIcon'), resultTitle: $('#resultTitle'),
@@ -1211,17 +1343,30 @@
       return sequence.map((type, i) => `<div class="feedback-peg ${type !== 'empty' ? type : ''}" style="animation-delay:${i * 70}ms" aria-hidden="true"></div>`).join('');
     }
     function renderPalette() {
+      const selected = selectedColor ? COLOR_BY_ID[selectedColor] : null;
       elements.palette.innerHTML = COLORS.map(color => `
         <button type="button" class="color-button ${selectedColor === color.id ? 'selected' : ''}" data-color="${color.id}" title="${t('selectColorTitle', { color: colorName(color), key: color.key })}" aria-label="${t('selectColorAria', { color: colorName(color), key: color.key })}" aria-pressed="${selectedColor === color.id}">
           <span class="palette-dot" style="background:${color.hex}">${settings.colorBlindMode ? color.symbol : ''}</span>
           <span><span class="color-name">${colorName(color)}</span><span class="color-key">${t('keyLabel', { key: color.key })}</span></span>
         </button>`).join('');
-      const selected = selectedColor ? COLOR_BY_ID[selectedColor] : null;
+      elements.quickPalette.innerHTML = COLORS.map(color => `
+        <button type="button" class="quick-color-button ${selectedColor === color.id ? 'selected' : ''}" data-quick-color="${color.id}" title="${t('quickColorTitle', { color: colorName(color), key: color.key })}" aria-label="${t('quickColorTitle', { color: colorName(color), key: color.key })}" aria-pressed="${selectedColor === color.id}">
+          <span class="quick-color-swatch" style="background:${color.hex}">${settings.colorBlindMode ? color.symbol : ''}</span>
+          <span class="quick-color-key" aria-hidden="true">${color.key}</span>
+        </button>`).join('');
       elements.selectionStatus.innerHTML = selected
         ? t('selectedColor', { color: colorName(selected), symbol: settings.colorBlindMode ? `(${selected.symbol})` : '' })
         : t('selectionIdle');
-      elements.submitBtn.disabled = state.currentGuess.some(value => !value) || state.gameStatus !== 'playing';
-      elements.clearBtn.disabled = !state.currentGuess.some(Boolean) || state.gameStatus !== 'playing';
+      elements.quickPaletteStatus.textContent = selected
+        ? t('quickPaletteSelected', { color: colorName(selected) })
+        : t('quickPaletteIdle');
+      const isPlaying = state.gameStatus === 'playing';
+      const rowIsComplete = state.currentGuess.some(value => !value) === false;
+      const hasPeg = state.currentGuess.some(Boolean);
+      elements.submitBtn.disabled = !rowIsComplete || !isPlaying;
+      elements.clearBtn.disabled = !hasPeg || !isPlaying;
+      elements.quickUndoBtn.disabled = !hasPeg || !isPlaying;
+      elements.quickSubmitBtn.disabled = !rowIsComplete || !isPlaying;
     }
     function renderColorHints() {
       const observed = Object.fromEntries(COLORS.map(color => [color.id, 0]));
@@ -1239,6 +1384,12 @@
         if ((entry.feedback.black + entry.feedback.white) === 0) entry.guess.forEach(colorId => { if (colorId) eliminated.add(colorId); });
       });
       return [...eliminated];
+    }
+    function getGuessedColors() {
+      const guessed = new Set();
+      state.allGuesses.forEach(entry => entry.guess.forEach(colorId => { if (colorId) guessed.add(colorId); }));
+      state.currentGuess.forEach(colorId => { if (colorId) guessed.add(colorId); });
+      return guessed;
     }
     function getDefaultHelperMessage() {
       if (!state.allGuesses.length) return t('helperInitial');
@@ -1269,7 +1420,8 @@
         state.helperMessage = t('hintEliminate', { color: colorName(COLOR_BY_ID[eliminated]) });
       } else {
         const secretColors = [...new Set(state.secretCode)];
-        const newColor = secretColors.find(colorId => !usedKeys.has(`color:${colorId}`));
+        const guessedColors = getGuessedColors();
+        const newColor = secretColors.find(colorId => !guessedColors.has(colorId) && !usedKeys.has(`color:${colorId}`));
         if (newColor) {
           hint = { type: 'color', colorId: newColor };
           state.helperMessage = t('hintColor', { color: colorName(COLOR_BY_ID[newColor]) });
@@ -1311,6 +1463,17 @@
       if (!state || state.gameStatus !== 'playing') return;
       selectedColor = colorId;
       playSound('select');
+      renderPalette();
+    }
+    function placeNextColor(colorId) {
+      if (!state || state.gameStatus !== 'playing') return;
+      const slotIndex = state.currentGuess.findIndex(value => !value);
+      if (slotIndex < 0) { showToast(t('quickRowFull'), 'error'); return; }
+      selectedColor = colorId;
+      state.currentGuess[slotIndex] = colorId;
+      playSound('place');
+      saveGameState();
+      renderBoard();
       renderPalette();
     }
     function placeColor(slotIndex) {
@@ -1403,6 +1566,18 @@
       renderGame();
       const submittedEl = elements.board.querySelector(`.guess-row[data-row="${submittedRow}"]`);
       submittedEl?.classList.add(feedback.black || feedback.white ? 'success-pulse' : 'shake');
+      requestAnimationFrame(scrollActiveRowIntoView);
+    }
+
+    function scrollActiveRowIntoView() {
+      const activeRow = elements.board?.querySelector('.active-row');
+      if (!activeRow) return;
+      const dockTop = elements.quickPaletteDock?.getBoundingClientRect().top ?? window.innerHeight;
+      const rect = activeRow.getBoundingClientRect();
+      if (rect.bottom > dockTop - 14 || rect.top < 72) {
+        const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+        activeRow.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
+      }
     }
 
     function getDifficultyFactor(options = state?.options) {
@@ -1689,8 +1864,11 @@
       elements.welcomeLeaderboardBtn.addEventListener('click', showLeaderboard);
       elements.welcomeHelpBtn.addEventListener('click', () => elements.helpModal.classList.add('visible'));
       elements.palette.addEventListener('click', event => { const button = event.target.closest('[data-color]'); if (button) selectColor(button.dataset.color); });
+      elements.quickPalette.addEventListener('click', event => { const button = event.target.closest('[data-quick-color]'); if (button) placeNextColor(button.dataset.quickColor); });
       elements.board.addEventListener('click', event => { const slot = event.target.closest('[data-slot-index]'); if (slot && !slot.disabled && Number(slot.dataset.slotRow) === state?.currentRow) placeColor(Number(slot.dataset.slotIndex)); });
       elements.submitBtn.addEventListener('click', submitGuess);
+      elements.quickUndoBtn.addEventListener('click', clearLastPeg);
+      elements.quickSubmitBtn.addEventListener('click', submitGuess);
       elements.clearBtn.addEventListener('click', clearRow);
       elements.newGameBtn.addEventListener('click', requestNewGame);
       elements.hintBtn.addEventListener('click', requestHint);
