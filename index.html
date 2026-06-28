@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <meta name="theme-color" content="#0a0a1a" />
-  <meta name="game-version" content="1.7.0" />
+  <meta name="game-version" content="1.1.0" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -195,114 +195,198 @@
     .resume-box.visible { display: flex; }
     .resume-box small { color: #b9f7d6; display: block; line-height: 1.45; }
     .note { margin-top: 20px; color: #8f8fac; font-size: .75rem; }
+    /* Footer: compact product signature with a dedicated open-source link. */
     .site-footer {
       position: relative;
       isolation: isolate;
-      width: min(720px, 100%);
-      display: flex;
+      width: min(760px, 100%);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 1px minmax(220px, auto);
       align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 22px auto 0;
-      padding: 9px 11px 9px 15px;
+      gap: 14px;
+      margin: 24px auto 0;
+      padding: 12px 14px;
       color: var(--muted);
       font-size: .78rem;
       line-height: 1.45;
-      text-align: center;
-      border: 1px solid rgba(255, 215, 0, .18);
-      border-radius: 18px;
+      border: 1px solid rgba(255, 215, 0, .20);
+      border-radius: 22px;
       overflow: hidden;
-      background: linear-gradient(135deg, rgba(255,255,255,.045), rgba(255,215,0,.075));
-      box-shadow: 0 12px 32px rgba(0,0,0,.18);
+      background:
+        radial-gradient(circle at 5% 50%, rgba(255, 215, 0, .13), transparent 28%),
+        linear-gradient(135deg, rgba(255,255,255,.055), rgba(255,215,0,.065));
+      box-shadow: 0 14px 34px rgba(0,0,0,.20);
     }
     .site-footer::before {
       content: "";
       position: absolute;
       inset: 0 0 auto;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,243,163,.9), transparent);
-      z-index: -1;
+      background: linear-gradient(90deg, transparent, rgba(255,243,163,.96), transparent);
+      pointer-events: none;
     }
-    .footer-credit {
-      display: inline-flex;
+    .site-footer::after {
+      content: "";
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      inset: auto -62px -82px auto;
+      border: 1px solid rgba(255,215,0,.12);
+      border-radius: 50%;
+      box-shadow: 0 0 0 22px rgba(255,215,0,.025), 0 0 0 44px rgba(255,215,0,.018);
+      pointer-events: none;
+    }
+    .footer-identity {
+      position: relative;
+      z-index: 1;
+      display: flex;
       align-items: center;
-      justify-content: center;
-      flex: 1 1 280px;
-      min-height: 42px;
-      gap: 8px;
-      padding: 6px 7px;
+      min-width: 0;
+      gap: 10px;
     }
-    .footer-sparkle {
+    .footer-emblem {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
       display: grid;
-      width: 28px;
-      height: 28px;
-      flex: 0 0 28px;
-      place-items: center;
-      border: 1px solid rgba(255,215,0,.28);
-      border-radius: 10px;
-      color: var(--gold);
-      background: rgba(255,215,0,.09);
-      box-shadow: 0 0 18px rgba(255,215,0,.12);
-      font-size: .9rem;
+      grid-template-columns: repeat(2, 10px);
+      place-content: center;
+      gap: 5px;
+      border: 1px solid rgba(255,215,0,.24);
+      border-radius: 14px;
+      background: rgba(255,215,0,.075);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 0 20px rgba(255,215,0,.09);
     }
-    .footer-copy { color: var(--muted); white-space: nowrap; }
+    .footer-emblem i {
+      width: 10px;
+      height: 10px;
+      display: block;
+      border: 1px solid rgba(255,255,255,.56);
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 2px 5px rgba(0,0,0,.24);
+    }
+    .footer-emblem i:nth-child(2) { background: #6557ff; }
+    .footer-emblem i:nth-child(3) { background: #4df0a6; }
+    .footer-emblem i:nth-child(4) { background: #ff7ab6; }
+    .footer-copy-block { min-width: 0; display: grid; gap: 3px; }
+    .footer-kicker {
+      color: var(--gold);
+      font-size: .64rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .footer-credit-line { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .footer-copy { color: var(--muted); }
     .footer-author {
       display: inline-flex;
       align-items: center;
-      min-height: 28px;
+      min-height: 26px;
       padding: 0 9px;
-      border: 1px solid rgba(255,215,0,.22);
+      border: 1px solid rgba(255,215,0,.24);
       border-radius: 999px;
       color: #fff2a6;
-      background: rgba(255,215,0,.08);
+      background: rgba(255,215,0,.09);
       font-weight: 900;
       letter-spacing: .04em;
       direction: ltr;
     }
+    .footer-divider {
+      width: 1px;
+      height: 46px;
+      background: linear-gradient(180deg, transparent, rgba(255,255,255,.16), transparent);
+    }
     .github-link {
-      display: inline-flex;
+      position: relative;
+      z-index: 1;
+      min-height: 50px;
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr) 14px;
       align-items: center;
-      flex: 0 0 auto;
-      min-height: 44px;
       gap: 8px;
-      margin-inline-start: auto;
-      padding: 5px 9px 5px 6px;
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 14px;
+      padding: 6px 9px 6px 6px;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 16px;
       color: var(--text);
       text-decoration: none;
       text-align: start;
-      background: rgba(7, 7, 18, .46);
+      background: rgba(7, 7, 18, .48);
       transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
     }
     .github-link:hover {
       transform: translateY(-2px);
-      border-color: rgba(255,215,0,.42);
-      background: rgba(255,215,0,.08);
-      box-shadow: 0 10px 22px rgba(0,0,0,.2), 0 0 18px rgba(255,215,0,.1);
+      border-color: rgba(255,215,0,.52);
+      background: rgba(255,215,0,.09);
+      box-shadow: 0 10px 22px rgba(0,0,0,.22), 0 0 18px rgba(255,215,0,.1);
     }
     .github-link:focus-visible { outline: 3px solid rgba(255, 215, 0, .72); outline-offset: 3px; }
     .github-icon {
       display: grid;
-      width: 32px;
-      height: 32px;
-      flex: 0 0 32px;
+      width: 36px;
+      height: 36px;
       place-items: center;
-      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px;
       color: #ffffff;
       background: #171923;
       box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
     }
     .github-icon svg { width: 18px; height: 18px; fill: currentColor; }
     .github-text { display: grid; gap: 1px; min-width: 0; }
-    .github-text small { color: var(--muted); font-size: .64rem; font-weight: 700; letter-spacing: .02em; }
-    .github-text strong { color: var(--text); font-size: .79rem; letter-spacing: .02em; direction: ltr; unicode-bidi: plaintext; }
+    .github-text small { color: var(--muted); font-size: .63rem; font-weight: 700; letter-spacing: .02em; }
+    .github-text strong {
+      overflow: hidden;
+      color: var(--text);
+      font-size: .76rem;
+      letter-spacing: .01em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      direction: ltr;
+      unicode-bidi: plaintext;
+    }
     .github-arrow { color: var(--gold); font-size: 1.02rem; line-height: 1; }
 
+    /* Fixed release marker: physical bottom-right in both RTL and LTR layouts. */
+    .game-version-badge {
+      position: fixed;
+      z-index: 30;
+      right: max(12px, env(safe-area-inset-right));
+      bottom: max(12px, env(safe-area-inset-bottom));
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 34px;
+      padding: 0 11px;
+      border: 1px solid rgba(255,215,0,.28);
+      border-radius: 999px;
+      color: #fff1aa;
+      background: rgba(12,12,30,.82);
+      box-shadow: 0 8px 22px rgba(0,0,0,.26), 0 0 16px rgba(255,215,0,.08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .7rem;
+      font-weight: 900;
+      letter-spacing: .04em;
+      pointer-events: none;
+      user-select: none;
+    }
+    .game-version-badge::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      flex: 0 0 7px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 0 3px rgba(77,240,166,.14), 0 0 12px rgba(77,240,166,.46);
+    }
+
     html[data-theme="light"] .site-footer {
-      border-color: rgba(138,99,0,.22);
-      background: linear-gradient(135deg, rgba(255,255,255,.78), rgba(255,226,136,.42));
+      border-color: rgba(138,99,0,.24);
+      background:
+        radial-gradient(circle at 5% 50%, rgba(255,215,0,.19), transparent 28%),
+        linear-gradient(135deg, rgba(255,255,255,.88), rgba(255,226,136,.44));
       box-shadow: 0 12px 30px rgba(40,48,90,.12);
     }
     html[data-theme="light"] .footer-author {
@@ -310,24 +394,37 @@
       color: #5d4300;
       background: rgba(255,215,0,.16);
     }
+    html[data-theme="light"] .footer-divider { background: linear-gradient(180deg, transparent, rgba(70,80,135,.18), transparent); }
     html[data-theme="light"] .github-link {
       border-color: rgba(70,80,135,.16);
       color: #20243a;
-      background: rgba(255,255,255,.86);
+      background: rgba(255,255,255,.88);
       box-shadow: 0 5px 16px rgba(40,48,90,.08);
     }
     html[data-theme="light"] .github-link:hover {
-      border-color: rgba(138,99,0,.34);
+      border-color: rgba(138,99,0,.36);
       background: #ffffff;
       box-shadow: 0 10px 22px rgba(40,48,90,.12);
     }
     html[data-theme="light"] .github-text strong { color: #20243a; }
+    html[data-theme="light"] .game-version-badge {
+      color: #5d4300;
+      border-color: rgba(138,99,0,.26);
+      background: rgba(255,255,255,.88);
+      box-shadow: 0 8px 20px rgba(40,48,90,.14);
+    }
 
     @media (max-width: 560px) {
-      .site-footer { padding: 10px; gap: 8px; }
-      .footer-credit, .github-link { flex: 1 1 100%; }
-      .github-link { justify-content: center; margin-inline-start: 0; }
-      .github-text { text-align: start; }
+      .site-footer {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 12px;
+        text-align: center;
+      }
+      .footer-identity { justify-content: center; text-align: start; }
+      .footer-divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.16), transparent); }
+      .github-link { width: 100%; justify-self: stretch; }
+      .game-version-badge { right: max(9px, env(safe-area-inset-right)); bottom: max(9px, env(safe-area-inset-bottom)); min-height: 31px; padding: 0 9px; font-size: .65rem; }
     }
 
     .game-screen { padding: 20px 0 30px; align-items: flex-start; }
@@ -858,6 +955,9 @@
 <body>
   <canvas id="confetti" aria-hidden="true"></canvas>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div class="game-version-badge" data-i18n-aria="versionBadgeAria" aria-label="نسخه بازی ۱.۱">
+    <span data-i18n="versionBadge">نسخه ۱.۱</span>
+  </div>
 
   <section id="welcomeScreen" class="screen welcome active" aria-labelledby="welcomeTitle">
     <main class="welcome-card">
@@ -896,18 +996,24 @@
       </div>
       <p class="note" data-i18n="storageNote">داده‌ها فقط در مرورگر شما ذخیره می‌شوند. هیچ سروری برای قضاوت در مورد شکست شما خبر نمی‌شود.</p>
       <footer class="site-footer" aria-label="اطلاعات سازنده">
-        <div class="footer-credit">
-          <span class="footer-sparkle" aria-hidden="true">✦</span>
-          <span class="footer-copy" data-i18n="footerDesign">طراحی شده با عشق توسط</span>
-          <span class="footer-author">LaneZeroO</span>
+        <div class="footer-identity">
+          <span class="footer-emblem" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <div class="footer-copy-block">
+            <span class="footer-kicker" data-i18n="footerKicker">یک بازی از LaneZero</span>
+            <div class="footer-credit-line">
+              <span class="footer-copy" data-i18n="footerDesign">طراحی شده با عشق توسط</span>
+              <span class="footer-author">LaneZeroO</span>
+            </div>
+          </div>
         </div>
+        <span class="footer-divider" aria-hidden="true"></span>
         <a class="github-link" href="https://github.com/LaneZero/" target="_blank" rel="noopener noreferrer" data-i18n-aria="footerGithubAria" aria-label="مشاهده پروفایل LaneZero در گیت‌هاب">
           <span class="github-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M12 .7a11.3 11.3 0 0 0-3.57 22.02c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.31-1.25-1.66-1.25-1.66-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 1.72 2.64 1.22 3.28.93.1-.73.39-1.23.71-1.51-2.5-.28-5.13-1.25-5.13-5.57 0-1.23.44-2.24 1.16-3.03-.12-.28-.5-1.44.11-3 0 0 .95-.3 3.11 1.16a10.82 10.82 0 0 1 5.66 0c2.16-1.46 3.11-1.16 3.11-1.16.61 1.56.23 2.72.11 3 .72.79 1.16 1.8 1.16 3.03 0 4.33-2.63 5.28-5.14 5.56.4.35.76 1.05.76 2.13v3.15c0 .3.2.65.78.54A11.3 11.3 0 0 0 12 .7Z"/></svg>
           </span>
           <span class="github-text">
-            <small data-i18n="footerGithubLabel">مشاهده گیت‌هاب</small>
-            <strong>LaneZero</strong>
+            <small data-i18n="footerGithubLabel">کد و پروژه‌های بیشتر</small>
+            <strong>github.com/LaneZero</strong>
           </span>
           <span class="github-arrow" aria-hidden="true">↗</span>
         </a>
@@ -972,18 +1078,24 @@
         </aside>
       </div>
       <footer class="site-footer" aria-label="اطلاعات سازنده">
-        <div class="footer-credit">
-          <span class="footer-sparkle" aria-hidden="true">✦</span>
-          <span class="footer-copy" data-i18n="footerDesign">طراحی شده با عشق توسط</span>
-          <span class="footer-author">LaneZeroO</span>
+        <div class="footer-identity">
+          <span class="footer-emblem" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <div class="footer-copy-block">
+            <span class="footer-kicker" data-i18n="footerKicker">یک بازی از LaneZero</span>
+            <div class="footer-credit-line">
+              <span class="footer-copy" data-i18n="footerDesign">طراحی شده با عشق توسط</span>
+              <span class="footer-author">LaneZeroO</span>
+            </div>
+          </div>
         </div>
+        <span class="footer-divider" aria-hidden="true"></span>
         <a class="github-link" href="https://github.com/LaneZero/" target="_blank" rel="noopener noreferrer" data-i18n-aria="footerGithubAria" aria-label="مشاهده پروفایل LaneZero در گیت‌هاب">
           <span class="github-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M12 .7a11.3 11.3 0 0 0-3.57 22.02c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.31-1.25-1.66-1.25-1.66-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 1.72 2.64 1.22 3.28.93.1-.73.39-1.23.71-1.51-2.5-.28-5.13-1.25-5.13-5.57 0-1.23.44-2.24 1.16-3.03-.12-.28-.5-1.44.11-3 0 0 .95-.3 3.11 1.16a10.82 10.82 0 0 1 5.66 0c2.16-1.46 3.11-1.16 3.11-1.16.61 1.56.23 2.72.11 3 .72.79 1.16 1.8 1.16 3.03 0 4.33-2.63 5.28-5.14 5.56.4.35.76 1.05.76 2.13v3.15c0 .3.2.65.78.54A11.3 11.3 0 0 0 12 .7Z"/></svg>
           </span>
           <span class="github-text">
-            <small data-i18n="footerGithubLabel">مشاهده گیت‌هاب</small>
-            <strong>LaneZero</strong>
+            <small data-i18n="footerGithubLabel">کد و پروژه‌های بیشتر</small>
+            <strong>github.com/LaneZero</strong>
           </span>
           <span class="github-arrow" aria-hidden="true">↗</span>
         </a>
@@ -1088,7 +1200,7 @@
         secretCode: 'کد مخفی', guessBoard: 'صفحه حدس‌ها', colorSelection: 'انتخاب رنگ', colorPalette: 'پالت رنگ‌ها', quickPaletteTitle: 'انتخاب رنگ', quickColorPalette: 'انتخاب رنگ‌ها', quickPaletteIdle: 'برای انتخاب رنگ روی خانه بزن.', quickPaletteSelected: 'برای انتخاب رنگ روی خانه بزن.', quickColorTitle: '{color}', quickUndo: '⌫ حذف آخرین', quickSubmit: 'ثبت حدس ↵', quickRowFull: 'ردیف کامل است؛ برای اصلاح روی مهره بزن.', slotPickerTitle: 'انتخاب رنگ برای خانهٔ {position}', slotPickerNote: 'یک رنگ را مستقیم روی همین خانه قرار بده.', slotPickerClear: '⌫ پاک‌کردن خانه', slotPickerCancel: 'بستن', slotPickerAria: 'انتخاب رنگ برای خانهٔ {position}', helperNoFreshHint: 'سرنخ تازه‌ای باقی نمانده است؛ یار رمزگشا رنگ یا جایگاهِ تأییدشده را دوباره تکرار نمی‌کند.',
         submitGuess: 'ثبت حدس ↵', clearRow: 'پاک‌کردن ردیف', newGame: 'بازی جدید', colorNotes: 'یادداشت رنگ‌ها', colorUsage: 'تعداد مشاهده‌شده هر رنگ',
         helpTitle: 'راهنمای سریع بازی', close: 'بستن', leaderboardTitle: '🏆 ده امتیاز برتر', gameSetup: 'تنظیمات بازی', setupDescription: 'قانون‌های این دور را پیش از شروع انتخاب کن.', allowRepeatsLabel: 'اجازهٔ رنگ تکراری در کد', allowRepeatsHelp: 'یک رنگ می‌تواند بیش از یک‌بار در کد مخفی ظاهر شود.', easyModeLabel: 'حالت ساده', easyModeHelp: 'جایگاه‌های دقیق با علامت تأیید روی مهره‌ها نمایش داده می‌شوند؛ امتیاز این حالت کمتر محاسبه می‌شود.', helperTitle: 'یار رمزگشا', helperButton: '✨ یک راهنمایی ({count})', helperRemaining: 'راهنمایی باقی‌مانده: {count}', helperInitial: 'شروع آرام هم شروع است. یک حدس متنوع، اطلاعات بیشتری برای دور بعد می‌دهد.', helperProgress: 'پیشرفت خوبی داری. بازخورد قبلی سرنخ قابل استفاده دارد؛ این بار فقط یک تغییر هدفمند بده.', helperNoSignals: 'این حدس بی‌فایده نبود؛ به تو گفت چه رنگ‌هایی احتمالاً در کد نیستند. با نظم ادامه بده.', helperLate: '{count} تلاش مانده است. مهره‌های تأییدشده را نگه دار و فقط یک یا دو خانه را تغییر بده.', hintEliminate: 'سرنخ قطعی: رنگ {color} در کد مخفی وجود ندارد.', hintColor: 'سرنخ مهربان: رنگ {color} دست‌کم یک‌بار در کد مخفی وجود دارد.', hintPosition: 'سرنخ دقیق: خانهٔ {position} کد مخفی رنگ {color} است.', helperUsed: 'یک راهنمایی استفاده شد. {count} راهنمایی دیگر باقی مانده است.', helperNone: 'تمام راهنمایی‌ها استفاده شده‌اند، اما بازخوردهای قبلی هنوز مسیر را روشن می‌کنند.', modeEasy: 'حالت ساده', modeClassic: 'حالت عادی', modeRepeatsOn: 'رنگ تکراری: روشن', modeRepeatsOff: 'رنگ تکراری: خاموش', exactMatchAria: 'این جایگاه دقیق تأیید شده است.', colorsDoNotRepeat: 'رنگ‌ها در کد تکرار نمی‌شوند',
-        colorBlindOn: 'حالت کوررنگی', themeToLight: 'روشن', themeToDark: 'تیره', themeLightEnabled: 'حالت روشن فعال شد.', themeDarkEnabled: 'حالت تیره فعال شد.', footerDesign: 'طراحی شده با عشق توسط', footerGithubLabel: 'مشاهده گیت‌هاب', footerGithubAria: 'مشاهده پروفایل LaneZero در گیت‌هاب', soundOff: 'قطع صدا', soundOn: 'فعال‌کردن صدا',
+        colorBlindOn: 'حالت کوررنگی', themeToLight: 'روشن', themeToDark: 'تیره', themeLightEnabled: 'حالت روشن فعال شد.', themeDarkEnabled: 'حالت تیره فعال شد.', footerKicker: 'یک بازی از LaneZero', footerDesign: 'طراحی شده با عشق توسط', footerGithubLabel: 'کد و پروژه‌های بیشتر', footerGithubAria: 'مشاهده پروفایل LaneZero در گیت‌هاب', versionBadge: 'نسخه ۱.۱', versionBadgeAria: 'نسخه بازی ۱.۱', soundOff: 'قطع صدا', soundOn: 'فعال‌کردن صدا',
         usernameLengthError: 'نام باید بین ۳ تا ۱۵ کاراکتر باشد.', usernameCharsError: 'فقط حروف، عدد، فاصله، خط تیره و زیرخط مجاز است.',
         codeCreated: 'کد مخفی ساخته شد. شروع کن و کمی از منطق انسانی استفاده کن.', gameRestored: 'بازی قبلی بازگردانی شد. هنوز فرصت هست.',
         gameOver: 'بازی پایان یافت', rowStatus: 'تلاش {current} از {total}',
@@ -1135,7 +1247,7 @@
         secretCode: 'Secret code', guessBoard: 'Guess board', colorSelection: 'CHOOSE COLORS', colorPalette: 'Color palette', quickPaletteTitle: 'COLOR SELECTION', quickColorPalette: 'Color selection', quickPaletteIdle: 'Tap a slot to choose its color.', quickPaletteSelected: 'Tap a slot to choose its color.', quickColorTitle: '{color}', quickUndo: '⌫ UNDO LAST', quickSubmit: 'SUBMIT ↵', quickRowFull: 'This row is full. Tap a peg to edit it.', slotPickerTitle: 'CHOOSE COLOR FOR SLOT {position}', slotPickerNote: 'Place a color directly in this slot.', slotPickerClear: '⌫ CLEAR SLOT', slotPickerCancel: 'CLOSE', slotPickerAria: 'Choose a color for slot {position}', helperNoFreshHint: 'No fresh clue remains. The helper will not repeat an already confirmed color or position.',
         submitGuess: 'SUBMIT GUESS ↵', clearRow: 'CLEAR ROW', newGame: 'NEW GAME', colorNotes: 'COLOR NOTES', colorUsage: 'Color usage counts',
         helpTitle: 'HOW TO PLAY', close: 'Close', leaderboardTitle: '🏆 TOP 10 SCORES', gameSetup: 'GAME SETUP', setupDescription: 'Choose this round’s rules before starting.', allowRepeatsLabel: 'Allow repeated colors in the code', allowRepeatsHelp: 'A color may appear more than once in the secret code.', easyModeLabel: 'Easy mode', easyModeHelp: 'Exact positions are marked with a check on the pegs; this mode awards a lower score.', helperTitle: 'CODEBREAKER HELPER', helperButton: '✨ GET A HINT ({count})', helperRemaining: 'Hints remaining: {count}', helperInitial: 'A calm start still counts. A varied first guess gives you more information for the next turn.', helperProgress: 'You are making progress. The previous feedback contains a usable clue; make just one deliberate change this turn.', helperNoSignals: 'That guess was not wasted. It narrowed down which colors are probably absent. Keep going methodically.', helperLate: '{count} attempts remain. Keep confirmed pegs and change only one or two positions.', hintEliminate: 'Verified clue: {color} is not in the secret code.', hintColor: 'Friendly clue: {color} appears at least once in the secret code.', hintPosition: 'Precise clue: position {position} in the secret code is {color}.', helperUsed: 'One hint used. {count} hint(s) remain.', helperNone: 'All hints have been used, but the earlier feedback still points to a solution.', modeEasy: 'Easy mode', modeClassic: 'Classic mode', modeRepeatsOn: 'Repeats: on', modeRepeatsOff: 'Repeats: off', exactMatchAria: 'This exact position is confirmed.', colorsDoNotRepeat: 'Colors do not repeat in the code',
-        colorBlindOn: 'Colorblind mode', themeToLight: 'LIGHT', themeToDark: 'DARK', themeLightEnabled: 'Light mode enabled.', themeDarkEnabled: 'Dark mode enabled.', footerDesign: 'Designed with love by', footerGithubLabel: 'View on GitHub', footerGithubAria: 'Open the LaneZero GitHub profile', soundOff: 'Mute sound', soundOn: 'Enable sound',
+        colorBlindOn: 'Colorblind mode', themeToLight: 'LIGHT', themeToDark: 'DARK', themeLightEnabled: 'Light mode enabled.', themeDarkEnabled: 'Dark mode enabled.', footerKicker: 'A LaneZero game', footerDesign: 'Designed with love by', footerGithubLabel: 'Code and more projects', footerGithubAria: 'Open the LaneZero GitHub profile', versionBadge: 'v1.1', versionBadgeAria: 'Game version 1.1', soundOff: 'Mute sound', soundOn: 'Enable sound',
         usernameLengthError: 'Name must be 3 to 15 characters long.', usernameCharsError: 'Use only letters, numbers, spaces, hyphens, and underscores.',
         codeCreated: 'A secret code is ready. Begin, and attempt a modest display of human logic.', gameRestored: 'Your previous game was restored. There is still time.',
         gameOver: 'Game over', rowStatus: 'Attempt {current} of {total}',
